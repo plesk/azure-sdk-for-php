@@ -14,9 +14,9 @@
 
 namespace MicrosoftAzure\Common\Internal\Http;
 
+use GuzzleHttp\Psr7\Query;
 use MicrosoftAzure\Common\Internal\Resources;
 use MicrosoftAzure\Common\Internal\ServiceException;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Request;
 
 /**
@@ -38,7 +38,7 @@ class HttpClient
         $uri = new \GuzzleHttp\Psr7\Uri($path);
 
         if ($queryParams != null) {
-            $queryString = Psr7\build_query($queryParams);
+            $queryString = Query::build($queryParams);
             $uri = $uri->withQuery($queryString);
         }
 
@@ -46,7 +46,7 @@ class HttpClient
         if (empty($body)) {
             if (empty($headers['content-type'])) {
                 $headers['content-type'] = 'application/x-www-form-urlencoded';
-                $actualBody = Psr7\build_query($postParams);
+                $actualBody = Query::build($postParams);
             }
         } else {
             $actualBody = $body;
